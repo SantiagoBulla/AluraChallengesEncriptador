@@ -1,12 +1,12 @@
-// TODO REFACTOR CODE 
 let letraE = "enter";
 let letraI = "imes";
 let letraA = "ai";
 let letraO = "ober";
 let letraU = "ufat";
+
 let regex = /^[a-zA-Z\s]*$/;
 let errorFormato = '¡Texto no valido! \nEl texto contiene letras mayúsculas o acentos especiales, por favor ingrese palabras en minúsculas y sin acentos.';
-let llaves = {
+let letrasEquivalentes = {
     "enter": "e",
     "imes": "i",
     "ai": "a",
@@ -15,17 +15,12 @@ let llaves = {
 };
 
 function validarTexto(texto) {
-    let lowerCase = texto.toLowerCase();
-    if (lowerCase === texto && regex.test(lowerCase)) {
-        return true;
-    } else {
-        return false;
-    }
+    return texto.toLowerCase() === texto && regex.test(texto.toLowerCase());
 }
 
 function encriptarTexto(texto) {
     let fraseEncriptada = [];
-    texto.split('').forEach(letra => {
+    texto.split('').map(letra => {
         switch (letra) {
             case 'a':
                 fraseEncriptada.push(letraA);
@@ -52,11 +47,10 @@ function encriptarTexto(texto) {
 
 function desencriptarTexto(texto) {
     let textoDesencriptado = texto;
-    for (let llave in llaves) {
-        console.log(`Tengo que buscar ${llave} y cambiarlo por ${llaves[llave]}`);
+    for (let llave in letrasEquivalentes) {
         // Utilizamos una expresión regular global (/g) para reemplazar todas las coincidencias
         let regex = new RegExp(llave, "g");
-        textoDesencriptado = textoDesencriptado.replace(regex, llaves[llave]);
+        textoDesencriptado = textoDesencriptado.replace(regex, letrasEquivalentes[llave]);
     }
     return textoDesencriptado;
 }
@@ -113,14 +107,12 @@ function desencriptar() {
 }
 
 function copiarTexto() {
-    // TODO COPIAR TEXTO
-    let textoParaCopiar = document.getElementsByClassName('visualization-text').value;
-    alert(textoParaCopiar);
+    let textoParaCopiar = document.querySelector('.visualization-text').innerText;
     navigator.clipboard.writeText(textoParaCopiar)
         .then(() => {
-            console.log('Texto copiado al portapapeles con éxito' + textoParaCopiar);
+            alert('Texto copiado con éxito');
         })
         .catch(err => {
-            console.error('Error al copiar texto al portapapeles: ', err);
+            alert('Error al copiar texto al portapapeles: ', err);
         });
 }
